@@ -1,11 +1,12 @@
 import R from 'ramda';
 import logger from '../utils/logger';
-import { getSuccessResponse, getFailureResponse } from '../utils/AwsRequestResponse';
+import { getFailureResponse, getSuccessResponse } from '../utils/AwsRequestResponse';
 import helloWorldService from '../services/helloWorldService';
 
 const handler = async () => {
   try {
     const result = await helloWorldService.sayHello();
+    logger.log('helloWorldHandler_handler', { result });
     return getSuccessResponse(200, result);
   } catch (error) {
     logger.log('helloWorldHandler_handler', error);

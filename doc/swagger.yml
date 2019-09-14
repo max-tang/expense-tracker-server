@@ -1,0 +1,173 @@
+swagger: "2.0"
+
+info:
+  title: API for expense tracking app.
+  description: Providing APIs to perform tasks like manipulating expense records and fetching reports.
+  version: 0.1.0
+
+
+paths:
+  /hello-world:
+    get:
+      tags:
+        - "example"
+      summary: "An example endpoint"
+      description: ""
+      responses:
+        '200':
+          description: Always return 'Hello, world!'
+
+  /users:
+    post:
+      tags:
+        - User
+      description: Create a new user
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/UserRequest'
+      responses:
+        201:
+          description: 'The newly created user object'
+          schema:
+            $ref: '#/definitions/User'
+
+  /users/{userId}:
+    get:
+      tags:
+        - User
+      description: Create a new user
+      parameters:
+        - name: userId
+          in: path
+          type: string
+          required: true
+          description: 'example: uid-3297F0F2-35D3-4231-919D-1CFCF4035975'
+      responses:
+        200:
+          description: 'The user object'
+          schema:
+            $ref: '#/definitions/User'
+
+  /users/{userId}/receipts:
+    post:
+      tags:
+        - 'Receipt'
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ReceiptRequest'
+      responses:
+        201:
+          description: Return the receipt object
+          schema:
+            $ref: '#/definitions/Receipt'
+    get:
+      tags:
+        - 'Receipt'
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Return the receipt object
+          schema:
+            $ref: '#/definitions/ReceiptList'
+
+  /users/{userId}/receipts/{id}:
+    get:
+      tags:
+        - 'Receipt'
+      description: 'Get a receipt'
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Return the receipt object
+          schema:
+            $ref: '#/definitions/Receipt'
+    delete:
+      tags:
+        - 'Receipt'
+      description: 'Delete a receipt'
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+
+definitions:
+  UserRequest:
+    type: object
+    required:
+      - email
+      - name
+    properties:
+      name:
+        type: string
+        example: Tom Kitty
+      email:
+        type: string
+        example: tom.kitty@tomnjerry.com
+
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+        example: 'uid-3297F0F2-35D3-4231-919D-1CFCF4035975'
+      name:
+        type: string
+        example: Tom Kitty
+      email:
+        type: string
+        example: tom.kitty@tomnjerry.com
+
+  ReceiptRequest:
+    type: object
+    properties:
+      imageFilePath:
+        type: string
+        example: 's3://abc/receipts/2011-10-05T14:48:00.000Z.jpg'
+  Receipt:
+    type: object
+    properties:
+      id:
+        type: string
+        example: 'rid-3297F0F2-35D3-4231-919D-1CFCF4035975'
+      createdTimestamp:
+        type: string
+        example: '2011-10-05T14:48:00.000Z'
+        format: date
+      imageFilePath:
+        type: string
+        example: 's3://abc/receipts/2011-10-05T14:48:00.000Z.jpg'
+
+  ReceiptList:
+    type: array
+    items:
+      $ref: '#/definitions/Receipt'
+
