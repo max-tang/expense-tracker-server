@@ -1,0 +1,10 @@
+version: "3"
+services:
+  builder:
+    image: node:dubnium
+    volumes:
+      - "../:/workspace"
+      - "$HOME/.aws:/root/.aws"
+      - "$HOME/.npm/:/root/.npm/"
+      - "$HOME/.npmrc:/root/.npmrc"
+    working_dir: /workspace

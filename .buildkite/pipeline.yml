@@ -1,0 +1,10 @@
+using-node: &using-node
+  plugins:
+    - docker-compose#v2.6.0:
+        run: builder
+        config: docker-compose.yml
+
+steps:
+  - label: "Build & deploy to AWS"
+    command: npm run deploy
+    <<: *using-node
